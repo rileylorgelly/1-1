@@ -27,6 +27,7 @@ local DIRECTIONS = {
 local fps = "0.0"
 local fpsColor = {1, 0, 0, 1}
 local actualFps = 0
+local characterQuad
 ---@type {health: number, speed: number, position: Vector2, characterType: number}
 local Player = {
     health = 100,
@@ -72,7 +73,7 @@ function love.update(deltaTime)
             }
         end
     end
-
+    
     if love.keyboard.isDown("escape") then
         love.event.quit()
     end
