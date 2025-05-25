@@ -1,4 +1,5 @@
 local mathmod = require("modules.mathmod")
+local table2 = require("modules.table2")
 
 ---@class Vector2
 ---@field x number
@@ -28,15 +29,21 @@ local fps = "0.0"
 local fpsColor = {1, 0, 0, 1}
 local actualFps = 0
 local characterQuad
----@type {health: number, speed: number, position: Vector2, characterType: number}
+---@type {health: number, speed: number, position: Vector2, characterType: string}
 local Player = {
     health = 100,
     speed = 100,
-    characterType = 1, -- unused atm until i get assets.
+    characterType = "", -- unused atm until i get assets.
     position = {
         x = 0,
         y = 0
     },
+}
+
+local characterTypes = {
+    "sealf",
+    "sealm",
+    "sealn"
 }
 
 ---@type Vector2
@@ -52,6 +59,21 @@ function love.load(args)
         x = love.graphics.getWidth() / 2,
         y = love.graphics.getHeight() / 2
     }
+
+    local character = table2.find(args, "-c") or table2.find(args, "--character")
+    if character then
+        if args[character + 1] then
+            local characterType =  args[character + 1]
+            if table2.find(characterTypes, characterType) then
+                Player.characterType = characterType
+            else
+                print("invalid character type. defaulting to neutral character..")
+                Player.characterType = "sealn"
+            end
+        else
+            Player.characterType = characterTypes[1]
+        end
+    end
 end
 
 ---@param deltaTime number
